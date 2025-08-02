@@ -41,5 +41,6 @@ train.onpromotion = train.onpromotion.astype("float16")
 train.sales = train.sales.astype("float32")
 stores.cluster = stores.cluster.astype("int8")
 
-line, box = tr.get_transactions(train, transactions, save_dir = "res/transactions")
+# process transactions
+tr.get_transactions(train, transactions, save_dir = "res/transactions")
 
