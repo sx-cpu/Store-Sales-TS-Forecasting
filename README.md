@@ -1,7 +1,36 @@
 # Store Sales TS Forecasting
 Our main mission in this competition is, predicting sales for each product family and store combinations.
 
-## Datapus
+## Packages
+
+```python
+# BASE
+# ------------------------------------------------------
+import numpy as np
+import pandas as pd
+import os
+import gc
+import warnings
+
+# PACF - ACF
+# ------------------------------------------------------
+import statsmodels.api as sm
+
+# DATA VISUALIZATION
+# ------------------------------------------------------
+import matplotlib.pyplot as plt
+import seaborn as sns
+import plotly.express as px
+
+
+# CONFIGURATIONS
+# ------------------------------------------------------
+pd.set_option('display.max_columns', None)
+pd.options.display.float_format = '{:.2f}'.format
+warnings.filterwarnings('ignore')
+```
+
+## Data
 
 
 There are 6 data that will study on them step by step.

@@ -1,13 +1,13 @@
 import pandas as pd
 import plotly.express as px
 import os
+from include.process import save_plot
 
 
-def get_transactions(train, transactions, save_dir="res/transactions"):
+def get_transactions(transactions, temp, save_dir="res/transactions"):
 
     # Spearman correlation between Total Sales and Transactions 
-    # temp is a dataframe that contains the total sales and transactions for each store and date
-    temp = pd.merge(train.groupby(["date", "store_nbr"]).sales.sum().reset_index(), transactions, how = "left")
+    
     print("Spearman Correlation between Total Sales and Transactions: {:,.4f}".format(
         temp.corr("spearman").sales.loc["transactions"]))
     
@@ -57,12 +57,6 @@ def get_transactions(train, transactions, save_dir="res/transactions"):
     return line, box, monthly_line, scatter
 
 
-def save_plot(save_dir, plot, filename):
-
-    os.makedirs(save_dir, exist_ok=True)
-    filepath = os.path.join(save_dir, filename)
-    plot.write_html(filepath)
-    print(f"{filename} saved to: {filepath}")
 
 
 
