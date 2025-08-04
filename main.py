@@ -2,8 +2,9 @@
 import numpy as np
 import pandas as pd
 import warnings
-import include.transactions as tr
-import include.oil as o
+from include.transactions import TransactionsProcessor
+from include.oil import OilProcessor
+
 
 
 # CONFIGURATIONS
@@ -38,7 +39,9 @@ stores.cluster = stores.cluster.astype("int8")
 temp = pd.merge(train.groupby(["date", "store_nbr"]).sales.sum().reset_index(),
                      transactions, how = "left")
 
-
 # process transactions
-tr.get_transactions(transactions, temp, save_dir = "res/transactions")
-o.get_oil(oil, temp, save_dir = "res/oil")
+processor_transactions=TransactionsProcessor(transactions, temp, save_dir = "res/transactions")
+processor_transactions.process()
+# process oil
+processor_oil = OilProcessor(oil, temp, save_dir ="res/oil")
+processor_oil.process()
