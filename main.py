@@ -43,5 +43,5 @@ temp = pd.merge(train.groupby(["date", "store_nbr"]).sales.sum().reset_index(),
 processor_transactions=TransactionsProcessor(transactions, temp, save_dir = "res/transactions")
 processor_transactions.process()
 # process oil
-processor_oil = OilProcessor(oil, temp, save_dir ="res/oil")
+processor_oil = OilProcessor(oil, temp, train, save_dir ="res/oil")
 processor_oil.process()
