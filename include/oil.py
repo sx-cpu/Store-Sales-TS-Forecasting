@@ -86,43 +86,45 @@ class OilProcessor:
               
               if i >= 11 and i < 16:
                   a[a.family == fam].plot.scatter(x = "dcoilwtico_interpolated", 
-                                                  y = "sales", ax=axes[2, i-6])
-                  axes[2, i-6].set_title(fam+"\n Correlation:"+
+                                                  y = "sales", ax=axes[2, i-11])
+                  axes[2, i-11].set_title(fam+"\n Correlation:"+
                                          str(c[c.family == fam].sales.iloc[0])[:6], fontsize = 12)
-                  axes[2, i-6].axvline(x=70, color='r', linestyle='--')
+                  axes[2, i-11].axvline(x=70, color='r', linestyle='--')
 
               if i >= 16 and i < 21:
                   a[a.family == fam].plot.scatter(x = "dcoilwtico_interpolated", 
-                                                  y = "sales", ax=axes[3, i-6])
-                  axes[3, i-6].set_title(fam+"\n Correlation:"+
+                                                  y = "sales", ax=axes[3, i-16])
+                  axes[3, i-16].set_title(fam+"\n Correlation:"+
                                          str(c[c.family == fam].sales.iloc[0])[:6], fontsize = 12)
-                  axes[3, i-6].axvline(x=70, color='r', linestyle='--')
+                  axes[3, i-16].axvline(x=70, color='r', linestyle='--')
 
               if i >= 21 and i < 26:
                   a[a.family == fam].plot.scatter(x = "dcoilwtico_interpolated", 
-                                                  y = "sales", ax=axes[4, i-6])
-                  axes[4, i-6].set_title(fam+"\n Correlation:"+
+                                                  y = "sales", ax=axes[4, i-21])
+                  axes[4, i-21].set_title(fam+"\n Correlation:"+
                                          str(c[c.family == fam].sales.iloc[0])[:6], fontsize = 12)
-                  axes[4, i-6].axvline(x=70, color='r', linestyle='--')
+                  axes[4, i-21].axvline(x=70, color='r', linestyle='--')
 
               if i >= 26 and i < 31:
                   a[a.family == fam].plot.scatter(x = "dcoilwtico_interpolated", 
-                                                  y = "sales", ax=axes[5, i-6])
-                  axes[5, i-6].set_title(fam+"\n Correlation:"+
+                                                  y = "sales", ax=axes[5, i-26])
+                  axes[5, i-26].set_title(fam+"\n Correlation:"+
                                          str(c[c.family == fam].sales.iloc[0])[:6], fontsize = 12)
-                  axes[5, i-6].axvline(x=70, color='r', linestyle='--')
+                  axes[5, i-26].axvline(x=70, color='r', linestyle='--')
 
               if i >= 31:
                   a[a.family == fam].plot.scatter(x = "dcoilwtico_interpolated", 
-                                                  y = "sales", ax=axes[6, i-6])
-                  axes[6, i-6].set_title(fam+"\n Correlation:"+
+                                                  y = "sales", ax=axes[6, i-31])
+                  axes[6, i-31].set_title(fam+"\n Correlation:"+
                                          str(c[c.family == fam].sales.iloc[0])[:6], fontsize = 12)
-                  axes[6, i-6].axvline(x=70, color='r', linestyle='--')
+                  axes[6, i-31].axvline(x=70, color='r', linestyle='--')
 
-              plt.tight_layout(pad=5)
-              plt.suptitle("Daily Oil Product & Total Family Sales \n",
-                            fontsize = 20)
-              
+          plt.tight_layout(pad=5)
+          plt.suptitle("Daily Oil Product & Total Family Sales \n",
+                        fontsize = 20)
+          plot_path = os.path.join(self.save_dir, "fam_sale_cor.png")
+          plt.savefig(plot_path, dpi=300)
+          print(f"fam_sale_cor has been saved as {plot_path}")
                         
             
             

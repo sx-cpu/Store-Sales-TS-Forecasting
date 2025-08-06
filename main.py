@@ -4,6 +4,7 @@ import pandas as pd
 import warnings
 from include.transactions import TransactionsProcessor
 from include.oil import OilProcessor
+from include.Sale import SalesProcessor
 
 
 
@@ -45,3 +46,9 @@ processor_transactions.process()
 # process oil
 processor_oil = OilProcessor(oil, temp, train, save_dir ="res/oil")
 processor_oil.process()
+processor_oil.fam_sale_process()
+
+# process sales
+processor_sales = SalesProcessor(train, save_dir = "res/sales")
+processor_sales.cormat_plot()
+processor_sales.daily_total_sales()
