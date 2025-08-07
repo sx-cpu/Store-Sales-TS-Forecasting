@@ -9,10 +9,12 @@ import gc
 
 class SalesProcessor:
 
-    def __init__(self, train_df, save_dir="res/sales"):
+    def __init__(self, train_df, save_dir="res/sales", remove = True):
         self.train = train_df.copy()
         self.save_dir = save_dir
-        self.remove_unopened()
+
+        if remove:
+            self.remove_unopened()
 
 # Correlations among stores
     def cormat_plot(self):
@@ -67,6 +69,36 @@ class SalesProcessor:
         self.train = self.train[~((self.train.store_nbr == 53) & (self.train.date < "2014-05-29"))]
         self.train = self.train[~((self.train.store_nbr == 36) & (self.train.date < "2013-05-09"))]
         
+
+# ---------------------------------- forecast ---------------------------------
+    
+    def zero_forecasting(self):
+        c = self.train.groupby(["store_nbr", "family"]).sales.sum().reset_index().sort_values(["family", "store_nbr"])
+        c = c[c.sales == 0]
+
+        # Anti join
+        outer_join = self.train.merge(c[c.sales == 0].drop("sales", axis = 1), 
+                                      how = 'outer', indicator=True)
+        self.train = outer_join[~(outer_join._merge == 'both')].drop('_merge', axis = 1)
+        del outer_join
+        gc.collect()
+
+        # predict
+        zero_prediction = []
+        for i in range(0, len(c)):
+            zero_prediction.append(
+                pd.DataFrame({
+                    "date":pd.date_range("2017-08-16","2017-08-31").tolist(),
+                    "store_nbr":c.store_nbr.iloc[i],
+                    "family":c.family.iloc[i],
+                    "sales":0
+                })
+            )
+        zero_prediction = pd.concat(zero_prediction)
+        del c
+        gc.collect()
+        
+
         
 
         

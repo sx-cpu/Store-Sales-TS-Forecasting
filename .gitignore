@@ -11,3 +11,6 @@ res/
 
 # data
 data/
+
+# .ipynb
+*.ipynb

@@ -40,6 +40,9 @@ stores.cluster = stores.cluster.astype("int8")
 temp = pd.merge(train.groupby(["date", "store_nbr"]).sales.sum().reset_index(),
                      transactions, how = "left")
 
+
+#---------------------------------Analysis-----------------------------
+
 # process transactions
 processor_transactions=TransactionsProcessor(transactions, temp, save_dir = "res/transactions")
 processor_transactions.process()
@@ -52,3 +55,11 @@ processor_oil.fam_sale_process()
 processor_sales = SalesProcessor(train, save_dir = "res/sales")
 processor_sales.cormat_plot()
 processor_sales.daily_total_sales()
+
+
+#----------------------------------Forecast------------------------------
+
+# Zero Forecasting
+# (You don't need the machine learning or deep learning or another things for these time series
+# because we had some simple time series.)
+processor_sales.zero_forecasting()
