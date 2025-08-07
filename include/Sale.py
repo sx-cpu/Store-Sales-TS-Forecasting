@@ -9,12 +9,14 @@ import gc
 
 class SalesProcessor:
 
-    def __init__(self, train_df, save_dir="res/sales", remove = True):
+    def __init__(self, train_df, save_dir="res/sales", remove = True, find_passive = True):
         self.train = train_df.copy()
         self.save_dir = save_dir
-
+        
         if remove:
             self.remove_unopened()
+        if find_passive:
+            self.find_passive_family()
 
 # Correlations among stores
     def cormat_plot(self):
@@ -97,7 +99,60 @@ class SalesProcessor:
         zero_prediction = pd.concat(zero_prediction)
         del c
         gc.collect()
+
+
+    # Use this function to check the passive family
+    def find_passive_family(self):
+        save_path = os.path.join(self.save_dir, "Store-Family.png")
         
+        if os.path.exists(save_path):
+            print(f"Store-Family plot already exists: {save_path}")
+        else:
+            c = self.train.groupby(["family", "store_nbr"]).tail(60).groupby(["family", "store_nbr"]).sales.sum().reset_index()
+            print(c[c.sales == 0])
+
+            # according to the output above:
+            configs = [
+                (10, "LAWN AND GARDEN"),
+                (36, "LADIESWEAR"),
+                (6, "SCHOOL AND OFFICE SUPPLIES"),
+                (14, "BABY CARE"),
+                (53, "BOOKS")
+            ]
+            fig, ax = plt.subplots(1, 5, figsize=(20, 4))
+            for i, (store, family) in enumerate(configs):
+                df = self.train[(self.train.store_nbr == store) & (self.train.family == family)]
+                df.set_index("date").sales.plot(ax=ax[i], title=f"Store-{store} - {family}")
+            plt.savefig(save_path)
+
+    # Plot Daily Total Sales of the Family
+    def Fam_Daily_total_sales(self):
+        save_path = os.path.join(self.save_dir, "Daily_Total_Sales_of_the_family.png")
+        a = self.train.set_index("date").groupby("family").resamble("D").sales.sum().reset_index()
+        px.line(a, x = "date", y = "sales", color = "family", title = "Daily Total Sales of the Family")
+        save_plot(save_path)
+
+    # find the product preferred more
+    def best_preferred(self):
+        save_path = os.path.join(self.save_dir, "best_prefferd_family.png")
+        a = self.train.groupby("family").sales.mean().sort_values(ascending = False).reset_index()
+        px.bar(a, y="family", x="sales",color="family",title="Which product family preferred more?")
+        save_plot(save_path)
+
+    # How different can stores be from each other? 
+    def store_diff(self):
+        stores = pd.read_csv("./data/stores.csv")
+        save_path = os.path.join(self.save_dir, "store_diff.png")
+        d = pd.merge(self.train, stores)
+        d["store_nbr"] = d["store_nbr"].astype("int8")
+        d["year"] = d.date.dt.year
+        px.line(d.groupby(["city", "year"]).sales.mean().reset_index(), x = "year", y = "sales", color = "city")
+        save_plot(save_path)
+
+        
+        
+
+
 
         
 
