@@ -149,6 +149,8 @@ class SalesProcessor:
         px.line(d.groupby(["city", "year"]).sales.mean().reset_index(), x = "year", y = "sales", color = "city")
         save_plot(save_path)
 
+
+
         
         
 
