@@ -5,6 +5,7 @@ import warnings
 from include.transactions import TransactionsProcessor
 from include.oil import OilProcessor
 from include.Sale import SalesProcessor
+from include.HolidaysEvents import HolidaysEventsProcessor
 
 
 
@@ -55,6 +56,10 @@ processor_oil.fam_sale_process()
 processor_sales = SalesProcessor(train, save_dir = "res/sales")
 processor_sales.cormat_plot()
 processor_sales.daily_total_sales()
+
+# HolidaysEventsProcess
+processor_Holi = HolidaysEventsProcessor(train, test, stores)
+
 
 
 #----------------------------------Forecast------------------------------
